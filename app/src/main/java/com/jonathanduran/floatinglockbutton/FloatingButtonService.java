@@ -1,5 +1,6 @@
 package com.jonathanduran.floatinglockbutton;
 
+import android.app.Notification;
 import android.app.Service;
 import android.app.admin.DevicePolicyManager;
 import android.content.Intent;
@@ -23,6 +24,13 @@ public class FloatingButtonService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        startForeground(android.os.Process.myPid(), new Notification());
+        return START_STICKY;
     }
 
     @Override

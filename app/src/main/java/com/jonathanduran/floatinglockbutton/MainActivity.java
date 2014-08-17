@@ -3,38 +3,53 @@ package com.jonathanduran.floatinglockbutton;
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
-
     static final int RESULT_ENABLE = 1;
+    public static final String PREF = "floating_lock_button_pref";
+    public static final String ADMIN_ENABLED = "admin_enabled";
+    public static final String BUTTON_DISPLAYED = "button_displayed";
+
     private ComponentName componentName;
-    private Switch adminEnabled;
+    private Switch enableAdmin;
     private Switch displaySwitch;
+    private TextView textView;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        preferences = getSharedPreferences(PREF, Context.MODE_PRIVATE);
+
+        textView = (TextView)findViewById(R.id.textView);
+
         componentName = new ComponentName(this, Admin.class);
 
-        adminEnabled = (Switch)findViewById(R.id.admin_enabled);
-        adminEnabled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        enableAdmin = (Switch)findViewById(R.id.admin_enabled);
+        enableAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if (isChecked)
                     startEnableAdminIntent();
                 else {
-                    if(displaySwitch != null && displaySwitch.isChecked()) {
+                    if (displaySwitch != null && displaySwitch.isChecked()) {
                         displaySwitch.setChecked(false);
                         stopService(new Intent(MainActivity.this, FloatingButtonService.class));
+                        preferences.edit().putBoolean(BUTTON_DISPLAYED, false).commit();
                     }
+                    preferences.edit().putBoolean(ADMIN_ENABLED, false).commit();
+                    textView.setText(R.string.initial_message);
                 }
             }
         });
@@ -44,13 +59,40 @@ public class MainActivity extends Activity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    if(adminEnabled != null && adminEnabled.isChecked()) {
+                    if(enableAdmin != null && enableAdmin.isChecked()) {
                         startService(new Intent(MainActivity.this, FloatingButtonService.class));
+                        textView.setText(R.string.button_displayed);
+                        preferences.edit().putBoolean(BUTTON_DISPLAYED, true).commit();
                     }
-                } else
+                } else {
                     stopService(new Intent(MainActivity.this, FloatingButtonService.class));
+                    preferences.edit().putBoolean(BUTTON_DISPLAYED, false).commit();
+                    textView.setText(R.string.admin_enabled);
+                }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        boolean adminEnabled = preferences.getBoolean(ADMIN_ENABLED, false);
+        boolean buttonDisplayed = preferences.getBoolean(BUTTON_DISPLAYED, false);
+
+        if(adminEnabled & buttonDisplayed) {
+            enableAdmin.setChecked(true);
+            displaySwitch.setChecked(true);
+            textView.setText(R.string.button_displayed);
+        } else if(adminEnabled & !buttonDisplayed) {
+            enableAdmin.setChecked(true);
+            displaySwitch.setChecked(false);
+            textView.setText(R.string.admin_enabled);
+        } else {
+            enableAdmin.setChecked(false);
+            displaySwitch.setChecked(false);
+            textView.setText(R.string.initial_message);
+        }
     }
 
     private void startEnableAdminIntent() {
@@ -65,31 +107,16 @@ public class MainActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case RESULT_ENABLE:
-                if (resultCode == Activity.RESULT_OK)
+                if (resultCode == Activity.RESULT_OK) {
                     Log.i("MainActivity", "Admin enabled!");
-                else
+                    textView.setText(R.string.admin_enabled);
+                    preferences.edit().putBoolean(ADMIN_ENABLED, true).commit();
+                } else {
                     Log.i("MainActivity", "Admin enable FAILED!");
+                    textView.setText(R.string.error_message);
+                }
                 return;
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
