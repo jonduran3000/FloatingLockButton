@@ -1,11 +1,16 @@
 package com.jonathanduran.floatinglockbutton;
 
 import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,6 +26,14 @@ public class FloatingButtonService extends Service {
     WindowManager windowManager;
     ImageButton floatingButton;
 
+    BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(floatingButton != null)
+                floatingButton.performClick();
+        }
+    };
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -29,7 +42,22 @@ public class FloatingButtonService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        startForeground(android.os.Process.myPid(), new Notification());
+
+        registerReceiver(receiver, new IntentFilter("LOCK"));
+
+        Intent i = new Intent(this, MainActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, i, 0);
+
+        Intent b = new Intent("LOCK");
+        PendingIntent bpIntent = PendingIntent.getBroadcast(this, 0, b, 0);
+
+        startForeground(android.os.Process.myPid(), new NotificationCompat.Builder(this)
+                .setContentTitle("Floating Lock Button")
+                .setContentText("is running")
+                .setSmallIcon(R.drawable.ic_notification_icon)
+                .setContentIntent(pIntent)
+                .addAction(R.drawable.ic_notification_icon, "Lock", bpIntent)
+                .build());
         return START_STICKY;
     }
 
@@ -98,6 +126,7 @@ public class FloatingButtonService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(receiver);
         if(floatingButton != null)
             windowManager.removeView(floatingButton);
     }

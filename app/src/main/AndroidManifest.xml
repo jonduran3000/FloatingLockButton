@@ -19,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".FloatingButtonService" />
+        <service android:name=".FloatingButtonService"
+            android:icon="@drawable/ic_notification_icon"/>
         <receiver android:name=".Admin"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data android:name="android.app.device_admin"

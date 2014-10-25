@@ -53,9 +53,11 @@ public class MainActivity extends ActionBarActivity {
         enableAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked)
+                if (isChecked) {
                     startEnableAdminIntent();
-                else {
+                    displaySwitch.setEnabled(true);
+                } else {
+                    displaySwitch.setEnabled(false);
                     if (displaySwitch != null && displaySwitch.isChecked()) {
                         displaySwitch.setChecked(false);
                         stopService(new Intent(MainActivity.this, FloatingButtonService.class));
@@ -103,14 +105,17 @@ public class MainActivity extends ActionBarActivity {
         if(adminEnabled & buttonDisplayed) {
             enableAdmin.setChecked(true);
             displaySwitch.setChecked(true);
+            displaySwitch.setEnabled(true);
             textView.setText(R.string.button_displayed);
         } else if(adminEnabled & !buttonDisplayed) {
             enableAdmin.setChecked(true);
             displaySwitch.setChecked(false);
+            displaySwitch.setEnabled(true);
             textView.setText(R.string.admin_enabled);
         } else {
             enableAdmin.setChecked(false);
             displaySwitch.setChecked(false);
+            displaySwitch.setEnabled(false);
             textView.setText(R.string.initial_message);
         }
     }
