@@ -7,21 +7,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
     static final int RESULT_ENABLE = 1;
     public static final String PREF = "floating_lock_button_pref";
     public static final String ADMIN_ENABLED = "admin_enabled";
     public static final String BUTTON_DISPLAYED = "button_displayed";
 
     private ComponentName componentName;
-    private Switch enableAdmin;
-    private Switch displaySwitch;
+    private ToggleButton enableAdmin;
+    private ToggleButton displaySwitch;
     private TextView textView;
     private SharedPreferences preferences;
 
@@ -30,13 +34,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Util.loadTypefaces(this);
+        styleActionBar();
+
         preferences = getSharedPreferences(PREF, Context.MODE_PRIVATE);
 
         textView = (TextView)findViewById(R.id.textView);
+        textView.setTypeface(Util.getRegular());
+
+        TextView adminEnabledLabel = (TextView)findViewById(R.id.admin_enabled_label);
+        adminEnabledLabel.setTypeface(Util.getRegular());
+        TextView displayLockLabel = (TextView)findViewById(R.id.display_lock_label);
+        displayLockLabel.setTypeface(Util.getRegular());
 
         componentName = new ComponentName(this, Admin.class);
 
-        enableAdmin = (Switch)findViewById(R.id.admin_enabled);
+        enableAdmin = (ToggleButton)findViewById(R.id.admin_enabled);
         enableAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -54,7 +67,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        displaySwitch = (Switch)findViewById(R.id.display_lock);
+        displaySwitch = (ToggleButton)findViewById(R.id.display_lock);
         displaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -71,6 +84,13 @@ public class MainActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void styleActionBar() {
+        SpannableString title = new SpannableString(getString(R.string.app_name));
+        title.setSpan(new TypefaceSpan(this, "RobotoCondensed-Bold.ttf"), 0, title.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
