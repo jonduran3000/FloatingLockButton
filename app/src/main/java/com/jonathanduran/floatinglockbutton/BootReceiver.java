@@ -17,7 +17,7 @@ public class BootReceiver extends BroadcastReceiver {
 
         boolean serviceEnabled = preferences.getBoolean(MainActivity.BUTTON_DISPLAYED, false);
 
-        if(serviceEnabled) {
+        if (serviceEnabled) {
             Intent floatingService = new Intent(context, FloatingButtonService.class);
             context.startService(floatingService);
         }

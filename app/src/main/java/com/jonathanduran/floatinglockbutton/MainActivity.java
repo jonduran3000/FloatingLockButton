@@ -12,7 +12,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -39,17 +38,17 @@ public class MainActivity extends ActionBarActivity {
 
         preferences = getSharedPreferences(PREF, Context.MODE_PRIVATE);
 
-        textView = (TextView)findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textView);
         textView.setTypeface(Util.getRegular());
 
-        TextView adminEnabledLabel = (TextView)findViewById(R.id.admin_enabled_label);
+        TextView adminEnabledLabel = (TextView) findViewById(R.id.admin_enabled_label);
         adminEnabledLabel.setTypeface(Util.getRegular());
-        TextView displayLockLabel = (TextView)findViewById(R.id.display_lock_label);
+        TextView displayLockLabel = (TextView) findViewById(R.id.display_lock_label);
         displayLockLabel.setTypeface(Util.getRegular());
 
         componentName = new ComponentName(this, Admin.class);
 
-        enableAdmin = (ToggleButton)findViewById(R.id.admin_enabled);
+        enableAdmin = (ToggleButton) findViewById(R.id.admin_enabled);
         enableAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -69,12 +68,12 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        displaySwitch = (ToggleButton)findViewById(R.id.display_lock);
+        displaySwitch = (ToggleButton) findViewById(R.id.display_lock);
         displaySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    if(enableAdmin != null && enableAdmin.isChecked()) {
+                if (isChecked) {
+                    if (enableAdmin != null && enableAdmin.isChecked()) {
                         startService(new Intent(MainActivity.this, FloatingButtonService.class));
                         textView.setText(R.string.button_displayed);
                         preferences.edit().putBoolean(BUTTON_DISPLAYED, true).commit();
@@ -102,12 +101,12 @@ public class MainActivity extends ActionBarActivity {
         boolean adminEnabled = preferences.getBoolean(ADMIN_ENABLED, false);
         boolean buttonDisplayed = preferences.getBoolean(BUTTON_DISPLAYED, false);
 
-        if(adminEnabled & buttonDisplayed) {
+        if (adminEnabled & buttonDisplayed) {
             enableAdmin.setChecked(true);
             displaySwitch.setChecked(true);
             displaySwitch.setEnabled(true);
             textView.setText(R.string.button_displayed);
-        } else if(adminEnabled & !buttonDisplayed) {
+        } else if (adminEnabled & !buttonDisplayed) {
             enableAdmin.setChecked(true);
             displaySwitch.setChecked(false);
             displaySwitch.setEnabled(true);

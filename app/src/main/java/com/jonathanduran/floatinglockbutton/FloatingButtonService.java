@@ -1,6 +1,5 @@
 package com.jonathanduran.floatinglockbutton;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.admin.DevicePolicyManager;
@@ -29,7 +28,7 @@ public class FloatingButtonService extends Service {
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(floatingButton != null)
+            if (floatingButton != null)
                 floatingButton.performClick();
         }
     };
@@ -65,7 +64,7 @@ public class FloatingButtonService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);
+        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
         floatingButton = new ImageButton(this);
         floatingButton.setLayoutParams(new ViewGroup.LayoutParams(48, 48));
@@ -101,7 +100,7 @@ public class FloatingButtonService extends Service {
                         initialTouchY = event.getRawY();
                         return true;
                     case MotionEvent.ACTION_UP:
-                        if(!moved)
+                        if (!moved)
                             floatingButton.performClick();
                         return true;
                     case MotionEvent.ACTION_MOVE:
@@ -127,12 +126,12 @@ public class FloatingButtonService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-        if(floatingButton != null)
+        if (floatingButton != null)
             windowManager.removeView(floatingButton);
     }
 
     private void lockScreen() {
-        DevicePolicyManager devicePolicyManager = (DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
         devicePolicyManager.lockNow();
     }
 }
