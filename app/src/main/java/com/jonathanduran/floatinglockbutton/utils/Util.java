@@ -1,4 +1,4 @@
-package com.jonathanduran.floatinglockbutton;
+package com.jonathanduran.floatinglockbutton.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;

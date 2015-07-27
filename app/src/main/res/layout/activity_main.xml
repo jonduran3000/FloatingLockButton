@@ -11,7 +11,7 @@
     <ToggleButton
         android:layout_width="@dimen/toggle_button_size"
         android:layout_height="@dimen/toggle_button_size"
-        android:text="Display Lock Button"
+        android:text="@string/title_display_lock_button"
         android:id="@+id/display_lock"
         android:checked="false"
         android:background="@drawable/toggle_check"
@@ -25,7 +25,7 @@
     <ToggleButton
         android:layout_width="@dimen/toggle_button_size"
         android:layout_height="@dimen/toggle_button_size"
-        android:text="Administrator Enabled"
+        android:text="@string/title_enable_administrator"
         android:id="@+id/admin_enabled"
         android:background="@drawable/toggle_check"
         android:textOn=""

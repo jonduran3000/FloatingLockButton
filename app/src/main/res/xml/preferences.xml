@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/action_settings">
+    <CheckBoxPreference
+        android:title="@string/title_enable_administrator"/>
+    <CheckBoxPreference
+        android:title="@string/title_display_lock_button"/>
+    </PreferenceCategory>
+</PreferenceScreen>

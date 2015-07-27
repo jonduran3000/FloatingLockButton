@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/floating_action_toolbar"
+        android:layout_height="?android:attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:background="?attr/colorPrimary">
+
+        <com.jonathanduran.floatinglockbutton.ui.misc.CustomFontTextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/md_white_1000"
+            app:font="@string/condensed_bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <fragment
+        android:id="@+id/floating_action_fragment"
+        android:name="com.jonathanduran.floatinglockbutton.ui.FloatingButtonFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>

@@ -1,4 +1,4 @@
-package com.jonathanduran.floatinglockbutton;
+package com.jonathanduran.floatinglockbutton.ui;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.Log;
@@ -15,8 +15,14 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.jonathanduran.floatinglockbutton.FloatingLockAdminReceiver;
+import com.jonathanduran.floatinglockbutton.FloatingButtonService;
+import com.jonathanduran.floatinglockbutton.R;
+import com.jonathanduran.floatinglockbutton.ui.misc.TypefaceSpan;
+import com.jonathanduran.floatinglockbutton.utils.Util;
 
-public class MainActivity extends ActionBarActivity {
+
+public class MainActivity extends AppCompatActivity {
     static final int RESULT_ENABLE = 1;
     public static final String PREF = "floating_lock_button_pref";
     public static final String ADMIN_ENABLED = "admin_enabled";
@@ -46,7 +52,7 @@ public class MainActivity extends ActionBarActivity {
         TextView displayLockLabel = (TextView) findViewById(R.id.display_lock_label);
         displayLockLabel.setTypeface(Util.getRegular());
 
-        componentName = new ComponentName(this, Admin.class);
+        componentName = new ComponentName(this, FloatingLockAdminReceiver.class);
 
         enableAdmin = (ToggleButton) findViewById(R.id.admin_enabled);
         enableAdmin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

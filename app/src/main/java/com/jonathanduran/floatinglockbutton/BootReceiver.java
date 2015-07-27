@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import com.jonathanduran.floatinglockbutton.ui.MainActivity;
+
 /**
  * Created by jonathanduran on 8/17/14.
  */
-public class BootReceiver extends BroadcastReceiver {
+public final class BootReceiver extends BroadcastReceiver {
     private SharedPreferences preferences;
 
     @Override

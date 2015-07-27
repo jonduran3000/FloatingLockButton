@@ -7,24 +7,34 @@
 
     <application
         android:allowBackup="true"
+        android:name=".FloatingButtonApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/FLBTheme.NoActionBar">
+        <!--<activity-->
+            <!--android:name=".ui.MainActivity"-->
+            <!--android:label="@string/app_name">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.FloatingButtonActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".FloatingButtonService"
             android:icon="@drawable/ic_notification_icon" />
 
         <receiver
-            android:name=".Admin"
+            android:name=".FloatingLockAdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data
                 android:name="android.app.device_admin"
