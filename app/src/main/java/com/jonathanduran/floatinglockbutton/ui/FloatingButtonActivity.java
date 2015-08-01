@@ -36,7 +36,7 @@ public final class FloatingButtonActivity extends AppCompatPreferenceActivity {
         return prompt;
     }
 
-    private void startEnableAdminIntent() {
+    public void startEnableAdminIntent() {
         Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
         intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getPermissionPrompt());

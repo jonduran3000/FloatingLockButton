@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.FloatingActionButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/button_size"
+    android:layout_height="@dimen/button_size"
+    android:src="@drawable/ic_action_lock"
+    app:fabSize="normal"
+    app:borderWidth="0dp"
+    app:backgroundTint="@color/md_blue_900"
+    app:rippleColor="@color/md_white_1000"
+    app:elevation="6dp">
+
+</android.support.design.widget.FloatingActionButton>

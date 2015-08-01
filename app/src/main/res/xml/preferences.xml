@@ -4,8 +4,10 @@
     <PreferenceCategory
         android:title="@string/action_settings">
     <CheckBoxPreference
+        android:key="@string/title_enable_administrator"
         android:title="@string/title_enable_administrator"/>
     <CheckBoxPreference
+        android:key="@string/title_display_lock_button"
         android:title="@string/title_display_lock_button"/>
     </PreferenceCategory>
 </PreferenceScreen>

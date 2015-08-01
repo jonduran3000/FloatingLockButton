@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +27,14 @@ import com.jonathanduran.floatinglockbutton.ui.MainActivity;
 public final class FloatingButtonService extends Service {
 
     WindowManager windowManager;
-    ImageButton floatingButton;
+    //ImageButton floatingButton;
     FloatingActionButton button;
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (floatingButton != null) {
-                floatingButton.performClick();
+            if (button != null) {
+                button.performClick();
             }
         }
     };
@@ -71,14 +72,13 @@ public final class FloatingButtonService extends Service {
 
         windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
-        button = new FloatingActionButton(this);
-        floatingButton = new ImageButton(this);
-        floatingButton.setLayoutParams(new ViewGroup.LayoutParams(48, 48));
-        floatingButton.setBackgroundResource(R.drawable.circle_button);
-        floatingButton.setImageResource(R.drawable.ic_action_android);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        button = (FloatingActionButton) inflater.inflate(R.layout.floating_button, null);
+
+        int px = getResources().getDimensionPixelSize(R.dimen.window_size);
 
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                150, 150, WindowManager.LayoutParams.TYPE_PHONE,
+                px, px, WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 
@@ -86,9 +86,9 @@ public final class FloatingButtonService extends Service {
         params.x = 0;
         params.y = 100;
 
-        windowManager.addView(floatingButton, params);
+        windowManager.addView(button, params);
 
-        floatingButton.setOnTouchListener(
+        button.setOnTouchListener(
                 new View.OnTouchListener() {
                     private int initialX;
                     private int initialY;
@@ -109,7 +109,7 @@ public final class FloatingButtonService extends Service {
                             }
                             case MotionEvent.ACTION_UP: {
                                 if (!moved) {
-                                    floatingButton.performClick();
+                                    button.performClick();
                                 }
                                 return true;
                             }
@@ -117,7 +117,7 @@ public final class FloatingButtonService extends Service {
                                 moved = true;
                                 params.x = initialX - (int) (event.getRawX() - initialTouchX);
                                 params.y = initialY + (int) (event.getRawY() - initialTouchY);
-                                windowManager.updateViewLayout(floatingButton, params);
+                                windowManager.updateViewLayout(button, params);
                                 return true;
                             }
                         }
@@ -127,7 +127,7 @@ public final class FloatingButtonService extends Service {
 
         );
 
-        floatingButton.setOnClickListener(
+        button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -141,8 +141,8 @@ public final class FloatingButtonService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
-        if (floatingButton != null) {
-            windowManager.removeView(floatingButton);
+        if (button != null) {
+            windowManager.removeView(button);
         }
     }
 
